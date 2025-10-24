@@ -1,0 +1,101 @@
+package org.octopusden.octopus.artifactory.npm.maven.plugin.service.impl
+
+import org.octopusden.octopus.artifactory.npm.maven.plugin.service.CommandExecutorService
+import org.octopusden.octopus.artifactory.npm.maven.plugin.service.CommandExecutorService.CommandResult
+import org.slf4j.LoggerFactory
+import java.io.File
+import java.util.concurrent.TimeUnit
+
+class CommandExecutorServiceImpl : CommandExecutorService {
+    
+    private val logger = LoggerFactory.getLogger(CommandExecutorServiceImpl::class.java)
+    
+    companion object {
+        private const val DEFAULT_TIMEOUT_MINUTES = 10L
+    }
+
+    override fun executeCommand(command: List<String>, workingDirectory: String?, environmentVariables: Map<String, String>): CommandResult {
+        logger.debug("Executing command: ${command.joinToString(" ")}")
+        
+        try {
+            val processBuilder = ProcessBuilder(command)
+
+            workingDirectory?.let { 
+                processBuilder.directory(File(it))
+                logger.debug("Working directory: $it")
+            }
+
+            if (environmentVariables.isNotEmpty()) {
+                val env = processBuilder.environment()
+                for ((key, value) in environmentVariables) {
+                    env[key] = value
+                    logger.debug("Setting environment variable: $key=$value")
+                }
+            }
+
+            processBuilder.redirectErrorStream(false)
+            
+            val process = processBuilder.start()
+
+            val outputBuilder = StringBuilder()
+            val errorBuilder = StringBuilder()
+            
+            val outputThread = Thread {
+                process.inputStream.bufferedReader().use { reader ->
+                    reader.lines().forEach { line ->
+                        outputBuilder.appendLine(line)
+                        logger.debug("OUT: $line")
+                    }
+                }
+            }
+            
+            val errorThread = Thread {
+                process.errorStream.bufferedReader().use { reader ->
+                    reader.lines().forEach { line ->
+                        errorBuilder.appendLine(line)
+                        logger.debug("ERR: $line")
+                    }
+                }
+            }
+            
+            outputThread.start()
+            errorThread.start()
+
+            val finished = process.waitFor(DEFAULT_TIMEOUT_MINUTES, TimeUnit.MINUTES)
+            
+            if (!finished) {
+                process.destroyForcibly()
+                logger.error("Command timed out after $DEFAULT_TIMEOUT_MINUTES minutes: ${command.joinToString(" ")}")
+                return CommandResult(
+                    exitCode = -1,
+                    output = outputBuilder.toString(),
+                    errorOutput = "Command timed out after $DEFAULT_TIMEOUT_MINUTES minutes"
+                )
+            }
+
+            outputThread.join(5000)
+            errorThread.join(5000)
+            
+            val exitCode = process.exitValue()
+            val output = outputBuilder.toString().trim()
+            val errorOutput = errorBuilder.toString().trim()
+            
+            logger.debug("Command finished with exit code: $exitCode")
+            
+            return CommandResult(
+                exitCode = exitCode,
+                output = output,
+                errorOutput = errorOutput
+            )
+            
+        } catch (e: Exception) {
+            logger.error("Error executing command: ${command.joinToString(" ")}", e)
+            return CommandResult(
+                exitCode = -1,
+                output = "",
+                errorOutput = "Exception occurred: ${e.message}"
+            )
+        }
+    }
+
+}
