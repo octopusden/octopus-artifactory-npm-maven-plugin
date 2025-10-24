@@ -1,9 +1,0 @@
-<settings>
-    <servers>
-        <server>
-            <id>example-repo-local</id>
-            <username>admin</username>
-            <password>password</password>
-        </server>
-    </servers>
-</settings>
