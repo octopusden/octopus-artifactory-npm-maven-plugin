@@ -25,6 +25,7 @@
 
         <!-- Disable clean up since DELETE request only available on JFrog Pro -->
         <artifactory.npm.cleanup.build.info>false</artifactory.npm.cleanup.build.info>
+        <altDeploymentRepository>test-artifactory::default::http://${artifactoryUsername}:${artifactoryPassword}@localhost:18082/artifactory/${artifactory.repository}</altDeploymentRepository>
     </properties>
 
     <distributionManagement>
