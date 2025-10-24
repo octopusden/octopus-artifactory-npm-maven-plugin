@@ -1,6 +1,6 @@
 # octopus-artifactory-npm-maven-plugin
-A Maven plugin that integrates NPM dependency build information into an existing Maven build info published to JFrog aArtifactory.
-Designed for Maven projects that also use NPM.
+A Maven plugin that integrates NPM dependency build information into an existing Maven build info published to JFrog artifactory.
+Primarily intended for Maven projects that also use NPM.
 
 ### How it works
 1. Collect NPM module information:
