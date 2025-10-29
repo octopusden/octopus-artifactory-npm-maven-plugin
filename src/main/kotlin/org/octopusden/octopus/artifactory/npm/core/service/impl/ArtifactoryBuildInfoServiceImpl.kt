@@ -1,7 +1,7 @@
-package org.octopusden.octopus.artifactory.npm.maven.plugin.service.impl
+package org.octopusden.octopus.artifactory.npm.core.service.impl
 
-import org.octopusden.octopus.artifactory.npm.maven.plugin.exception.ArtifactoryException
-import org.octopusden.octopus.artifactory.npm.maven.plugin.service.ArtifactoryBuildInfoService
+import org.octopusden.octopus.artifactory.npm.core.exception.ArtifactoryException
+import org.octopusden.octopus.artifactory.npm.core.service.ArtifactoryBuildInfoService
 import org.octopusden.octopus.infrastructure.artifactory.client.ArtifactoryClient
 import org.octopusden.octopus.infrastructure.artifactory.client.dto.Agent
 import org.octopusden.octopus.infrastructure.artifactory.client.dto.BuildAgent

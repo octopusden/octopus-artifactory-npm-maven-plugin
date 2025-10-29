@@ -7,15 +7,15 @@ import org.apache.maven.plugins.annotations.Mojo
 import org.apache.maven.plugins.annotations.Parameter
 import org.apache.maven.plugins.annotations.ResolutionScope
 import org.apache.maven.project.MavenProject
-import org.octopusden.octopus.artifactory.npm.maven.plugin.configuration.ArtifactoryConfiguration
-import org.octopusden.octopus.artifactory.npm.maven.plugin.configuration.PluginConfiguration
+import org.octopusden.octopus.artifactory.npm.core.configuration.ArtifactoryConfiguration
+import org.octopusden.octopus.artifactory.npm.core.configuration.BuildInfoConfiguration
+import org.octopusden.octopus.artifactory.npm.core.exception.CoreException
+import org.octopusden.octopus.artifactory.npm.core.service.NpmBuildInfoIntegrationService
+import org.octopusden.octopus.artifactory.npm.core.service.impl.ArtifactoryBuildInfoServiceImpl
+import org.octopusden.octopus.artifactory.npm.core.service.impl.CommandExecutorServiceImpl
+import org.octopusden.octopus.artifactory.npm.core.service.impl.JFrogNpmCliServiceImpl
+import org.octopusden.octopus.artifactory.npm.core.service.impl.NpmBuildInfoIntegrationServiceImpl
 import org.octopusden.octopus.artifactory.npm.maven.plugin.exception.ParameterValidationException
-import org.octopusden.octopus.artifactory.npm.maven.plugin.exception.PluginException
-import org.octopusden.octopus.artifactory.npm.maven.plugin.service.NpmBuildInfoIntegrationService
-import org.octopusden.octopus.artifactory.npm.maven.plugin.service.impl.ArtifactoryBuildInfoServiceImpl
-import org.octopusden.octopus.artifactory.npm.maven.plugin.service.impl.CommandExecutorServiceImpl
-import org.octopusden.octopus.artifactory.npm.maven.plugin.service.impl.JFrogNpmCliServiceImpl
-import org.octopusden.octopus.artifactory.npm.maven.plugin.service.impl.NpmBuildInfoIntegrationServiceImpl
 import org.octopusden.octopus.artifactory.npm.maven.plugin.utils.ParameterValidator.validateArtifactoryUrl
 import org.octopusden.octopus.artifactory.npm.maven.plugin.utils.ParameterValidator.validatePackageJsonPath
 import org.octopusden.octopus.infrastructure.artifactory.client.ArtifactoryClassicClient
@@ -84,25 +84,27 @@ class ArtifactoryNpmMavenPluginMojo : AbstractMojo() {
 
             validateParameters()
             initializeServices()
-            val pluginConfiguration = PluginConfiguration(
+            val buildInfoConfiguration = BuildInfoConfiguration(
                 buildName, buildNumber,
                 npmBuildNameSuffix, npmRepository,
-                File(project.basedir, packageJsonPath).absolutePath,
-                skip, cleanupNpmBuildInfo
+                cleanupNpmBuildInfo
             )
             val artifactoryConfiguration = ArtifactoryConfiguration(
                 artifactoryUrl, artifactoryUsername,
                 artifactoryPassword, artifactoryAccessToken
             )
 
-            integrationService.generateNpmBuildInfo(pluginConfiguration, artifactoryConfiguration)
+            integrationService.generateNpmBuildInfo(
+                File(project.basedir, packageJsonPath).absolutePath,
+                buildInfoConfiguration, artifactoryConfiguration
+            )
 
             val originalListener = session.request.executionListener
             session.request.executionListener = ArtifactoryNpmBuildInfoListener(originalListener) {
-                integrationService.integrateNpmBuildInfo(pluginConfiguration)
+                integrationService.integrateNpmBuildInfo(buildInfoConfiguration)
             }
             
-        } catch (e: PluginException) {
+        } catch (e: CoreException) {
             val errorMessage = "NPM build info integration failed: ${e.message}"
             log.error(errorMessage, e)
             throw MojoFailureException(errorMessage, e)

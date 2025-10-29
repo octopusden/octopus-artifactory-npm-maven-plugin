@@ -1,9 +1,9 @@
-package org.octopusden.octopus.artifactory.npm.maven.plugin.service.impl
+package org.octopusden.octopus.artifactory.npm.core.service.impl
 
-import org.octopusden.octopus.artifactory.npm.maven.plugin.configuration.ArtifactoryConfiguration
-import org.octopusden.octopus.artifactory.npm.maven.plugin.exception.JFrogCliException
-import org.octopusden.octopus.artifactory.npm.maven.plugin.service.CommandExecutorService
-import org.octopusden.octopus.artifactory.npm.maven.plugin.service.JFrogNpmCliService
+import org.octopusden.octopus.artifactory.npm.core.configuration.ArtifactoryConfiguration
+import org.octopusden.octopus.artifactory.npm.core.exception.JFrogCliException
+import org.octopusden.octopus.artifactory.npm.core.service.CommandExecutorService
+import org.octopusden.octopus.artifactory.npm.core.service.JFrogNpmCliService
 import org.slf4j.LoggerFactory
 
 class JFrogNpmCliServiceImpl(

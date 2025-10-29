@@ -1,7 +1,7 @@
-package org.octopusden.octopus.artifactory.npm.maven.plugin.service.impl
+package org.octopusden.octopus.artifactory.npm.core.service.impl
 
-import org.octopusden.octopus.artifactory.npm.maven.plugin.service.CommandExecutorService
-import org.octopusden.octopus.artifactory.npm.maven.plugin.service.CommandExecutorService.CommandResult
+import org.octopusden.octopus.artifactory.npm.core.service.CommandExecutorService
+import org.octopusden.octopus.artifactory.npm.core.service.CommandExecutorService.CommandResult
 import org.slf4j.LoggerFactory
 import java.io.File
 import java.util.concurrent.TimeUnit

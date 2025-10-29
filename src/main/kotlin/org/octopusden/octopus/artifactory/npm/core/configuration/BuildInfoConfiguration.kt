@@ -1,12 +1,10 @@
-package org.octopusden.octopus.artifactory.npm.maven.plugin.configuration
+package org.octopusden.octopus.artifactory.npm.core.configuration
 
-data class PluginConfiguration(
+data class BuildInfoConfiguration(
     val buildName: String,
     val buildNumber: String,
     val npmBuildNameSuffix: String,
     val npmRepository: String,
-    val workingDirectory: String,
-    val skipExecution: Boolean,
     val cleanupNpmBuildInfo: Boolean
 ) {
     val npmBuildName: String

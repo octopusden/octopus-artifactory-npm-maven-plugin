@@ -1,4 +1,4 @@
-package org.octopusden.octopus.artifactory.npm.maven.plugin.service
+package org.octopusden.octopus.artifactory.npm.core.service
 
 interface CommandExecutorService {
     fun executeCommand(command: List<String>, workingDirectory: String? = null, environmentVariables: Map<String, String> = emptyMap()): CommandResult

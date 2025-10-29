@@ -1,11 +1,11 @@
-package org.octopusden.octopus.artifactory.npm.maven.plugin.exception
+package org.octopusden.octopus.artifactory.npm.core.exception
 
 class JFrogCliException(
     message: String,
     private val exitCode: Int? = null,
     private val errorOutput: String? = null,
     cause: Throwable? = null
-) : PluginException(message, cause) {
+) : CoreException(message, cause) {
     
     override fun toString(): String {
         val details = mutableListOf<String>()

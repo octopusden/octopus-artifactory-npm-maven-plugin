@@ -1,6 +1,6 @@
-package org.octopusden.octopus.artifactory.npm.maven.plugin.service
+package org.octopusden.octopus.artifactory.npm.core.service
 
-import org.octopusden.octopus.artifactory.npm.maven.plugin.configuration.ArtifactoryConfiguration
+import org.octopusden.octopus.artifactory.npm.core.configuration.ArtifactoryConfiguration
 
 interface JFrogNpmCliService {
     fun configureNpmRepository(packageJsonPath: String, npmRepository: String)

@@ -1,4 +1,4 @@
-package org.octopusden.octopus.artifactory.npm.maven.plugin.service
+package org.octopusden.octopus.artifactory.npm.core.service
 
 import org.octopusden.octopus.infrastructure.artifactory.client.dto.BuildInfo
 

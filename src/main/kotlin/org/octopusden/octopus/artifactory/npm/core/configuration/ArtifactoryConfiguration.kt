@@ -1,4 +1,4 @@
-package org.octopusden.octopus.artifactory.npm.maven.plugin.configuration
+package org.octopusden.octopus.artifactory.npm.core.configuration
 
 data class ArtifactoryConfiguration (
     private val rawUrl: String,
