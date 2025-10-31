@@ -34,7 +34,8 @@
         <maven.plugin.api.version>3.9.11</maven.plugin.api.version>
         <maven.invoker.plugin.version>3.9.1</maven.invoker.plugin.version>
         <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
-        <docker-maven-plugin.version>0.43.4</docker-maven-plugin.version>
+        <maven.compiler.plugin.version>3.14.1</maven.compiler.plugin.version>
+        <docker.maven.plugin.version>0.43.4</docker.maven.plugin.version>
 
         <artifactory.client.version>2.0.75</artifactory.client.version>
         <eclipse.sisu.plexus.version>0.3.5</eclipse.sisu.plexus.version>
@@ -140,7 +141,7 @@
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>${docker-maven-plugin.version}</version>
+                <version>${docker.maven.plugin.version}</version>
                 <configuration>
                     <autoCreateCustomNetworks>true</autoCreateCustomNetworks>
                     <images>
@@ -227,6 +228,15 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>

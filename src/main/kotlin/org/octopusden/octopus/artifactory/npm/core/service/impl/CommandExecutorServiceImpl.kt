@@ -15,8 +15,6 @@ class CommandExecutorServiceImpl : CommandExecutorService {
     }
 
     override fun executeCommand(command: List<String>, workingDirectory: String?, environmentVariables: Map<String, String>): CommandResult {
-        logger.debug("Executing command: ${command.joinToString(" ")}")
-        
         try {
             val processBuilder = ProcessBuilder(command)
 
