@@ -1,0 +1,11 @@
+name: Maven Release
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    uses: octopusden/octopus-base/.github/workflows/common-java-maven-release.yml@v2.1.8
+    with:
+      java-version: '21'
+      flow-type: hybrid
+    secrets: inherit
